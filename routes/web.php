@@ -20,8 +20,12 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::prefix('banner')->name('banner')->group(function () {
-        Route::get('/', [BannerController::class, 'index'])->name('.index'); 
+    Route::prefix('banner')->name('banner.')->controller(BannerController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/show', 'show')->name('show');
+        Route::post('/', 'store')->name('store');
+        Route::delete('{banner}', 'destroy')->name('destroy');
+        Route::delete('destroy/all', 'destroyAll')->name('destroyAll');
     });
 
 });

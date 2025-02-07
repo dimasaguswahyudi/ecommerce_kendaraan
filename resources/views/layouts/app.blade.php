@@ -18,10 +18,9 @@
     <!-- Alpine JS -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
-    <!-- Font Awwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
-        integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    {{-- material icons --}}
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@material-icons/font@latest/css/material-icons-outlined.min.css">
 
     @stack('styles')
 </head>
@@ -44,9 +43,11 @@
         <x-toast />
         @endif
 
+
         <main>
             {{ $slot }}
         </main>
+        <x-modal-delete />
     </div>
 
     @stack('scripts')
