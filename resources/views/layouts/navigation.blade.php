@@ -22,6 +22,10 @@
                         :active="request()->routeIs('admin.category.index')">
                         {{ __('Category') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('admin.discount.index')"
+                        :active="request()->routeIs('admin.discount.index')">
+                        {{ __('Discount') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -91,6 +95,10 @@
             <x-responsive-nav-link :href="route('admin.category.index')"
                 :active="request()->routeIs('admin.category.index')">
                 {{ __('Category') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin.discount.index')"
+                :active="request()->routeIs('admin.discount.index')">
+                {{ __('Discount') }}
             </x-responsive-nav-link>
         </div>
 

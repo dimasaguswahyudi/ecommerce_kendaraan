@@ -23,7 +23,7 @@
                   <th></th>
                   <th>Name</th>
                   <th class="text-center">Image</th>
-                  <th>Active</th>
+                  <th>Status</th>
                   <th>Created At</th>
                   <th>Updated At</th>
                   <th class="text-center">Actions</th>

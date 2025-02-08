@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('discounts', function (Blueprint $table) {
             $table->id();
             
-            $table->unsignedBigInteger('categorie_id');
-            $table->foreign('categorie_id')
+            $table->unsignedBigInteger('category_id');
+            $table->foreign('category_id')
             ->on('categories')
             ->references('id')
             ->onDelete('cascade')
@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('name');
             $table->integer('disc_percent');
             $table->string('image')->nullable();
+            $table->enum('is_active', [0, 1])->default(1)->comment('0 = inactive, 1 = active');
             $table->timestamps();
             $table->softDeletes();
         });

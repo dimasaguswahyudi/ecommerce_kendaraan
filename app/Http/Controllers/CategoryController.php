@@ -10,12 +10,17 @@ use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
+    protected $categories;
+    public function __construct(Category $categories)
+    {
+        $this->categories = $categories;
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $categories = Category::orderByDesc('updated_at')->paginate(10);
+        $categories = $this->categories->orderByDesc('updated_at')->paginate(10);
         return view('backoffice.category.index', compact('categories'));
     }
 
@@ -37,7 +42,7 @@ class CategoryController extends Controller
         if (isset($validated['image'])) {
             $validated['image'] = $request->file('image')->store('category', 'public');
         }
-        Category::create($validated);
+        $this->categories->create($validated);
         return to_route('admin.category.index')->with('success', 'Data successfully created!');
     }
 

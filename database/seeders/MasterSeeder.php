@@ -63,7 +63,7 @@ class MasterSeeder extends Seeder
             foreach ($discounts as $disc) {
                 Discount::create([
                     'name' => $disc['name'],
-                    'categorie_id' => $kuduEntekId, // Menggunakan ID dari kategori "Kudu Entek"
+                    'category_id' => $kuduEntekId, // Menggunakan ID dari kategori "Kudu Entek"
                     'disc_percent' => $disc['disc_percent']
                 ]);
             }
