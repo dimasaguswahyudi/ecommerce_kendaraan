@@ -30,6 +30,9 @@
                         :active="request()->routeIs('admin.product.index')">
                         {{ __('Product') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('admin.order.index')" :active="request()->routeIs('admin.order.index')">
+                        {{ __('Order') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -108,12 +111,15 @@
                 :active="request()->routeIs('admin.product.index')">
                 {{ __('Product') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin.order.index')" :active="request()->routeIs('admin.order.index')">
+                {{ __('Order') }}
+            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
+                <div class="font-medium text-base text-white">{{ Auth::user()->name }}</div>
                 <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
             </div>
 

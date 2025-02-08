@@ -27,8 +27,8 @@ class ProductController extends Controller
     public function index()
     {
         $products = $this->products->with('Category', 'Discount')->orderByDesc('updated_at')->paginate(10);
-        $categories = $this->categories->orderBy('name')->get(['id', 'name']);
-        $discounts = $this->discounts->orderBy('name')->get(['id', 'name']);
+        $categories = $this->categories->where('is_active', '1')->orderBy('name')->get(['id', 'name']);
+        $discounts = $this->discounts->where('is_active', '1')->orderBy('name')->get(['id', 'name']);
         return view('backoffice.product.index', compact('products', 'categories', 'discounts'));
     }
 

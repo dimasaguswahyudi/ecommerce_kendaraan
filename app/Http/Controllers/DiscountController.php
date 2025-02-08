@@ -23,7 +23,7 @@ class DiscountController extends Controller
     public function index()
     {
         $discounts = $this->discounts->with('Category')->orderByDesc('updated_at')->paginate(10);
-        $categories = $this->categories->orderBy('name')->get(['id', 'name']);
+        $categories = $this->categories->where('is_active', '1')->orderBy('name')->get(['id', 'name']);
         return view('backoffice.discount.index', compact('discounts', 'categories'));
     }
 
