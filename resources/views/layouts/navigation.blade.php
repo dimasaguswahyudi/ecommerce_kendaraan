@@ -18,6 +18,10 @@
                     <x-nav-link :href="route('admin.banner.index')" :active="request()->routeIs('admin.banner.index')">
                         {{ __('Banner') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('admin.category.index')"
+                        :active="request()->routeIs('admin.category.index')">
+                        {{ __('Category') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -79,6 +83,14 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                 {{ __('Dashboard') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin.banner.index')"
+                :active="request()->routeIs('admin.banner.index')">
+                {{ __('Banner') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin.category.index')"
+                :active="request()->routeIs('admin.category.index')">
+                {{ __('Category') }}
             </x-responsive-nav-link>
         </div>
 

@@ -8,3 +8,13 @@
 .input-md {
     height: 2.6rem;
 }
+
+.btn-secondary {
+    background-color: #ffe44b;
+    border-color: #dbc036;
+}
+
+.btn-primary {
+    background-color: #00573d;
+    border-color: #004a3b;
+}

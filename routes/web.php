@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,9 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
         Route::delete('destroy/all', 'destroyAll')->name('destroyAll');
     });
 
+    Route::resources([
+        'category' => CategoryController::class,
+    ]);
 });
 
 require __DIR__.'/auth.php';

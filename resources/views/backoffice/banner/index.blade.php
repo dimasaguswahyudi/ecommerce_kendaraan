@@ -20,7 +20,7 @@
                               $dispatch('open-modal', 'confirm-delete');
                               $dispatch('set-delete-action', '{{ route('admin.banner.destroyAll') }}');
                           ">
-                            <span class="material-icons-outlined fs-16">delete</span>
+                            <span class="material-icons-outlined text-[20px]">delete</span>
                             {{ __('Delete All') }}
                         </x-danger-button>
                     </div>
@@ -35,7 +35,6 @@
                         <div class="mt-6 flex flex-wrap items-center justify-center gap-3 banner-section"
                             x-data="{ url: null }">
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -102,7 +101,7 @@
                                                     $dispatch('open-modal', 'confirm-delete');
                                                     $dispatch('set-delete-action', url);
                                                 ">
-                                                <span class="material-icons-outlined fs-16">delete</span>
+                                                <span class="material-icons-outlined text-[14px]">delete</span>
                                             </span>
                                             <img src="{{ asset('storage/${element.name}') }}" alt="${element.name}" class="w-full h-full object-cover" />
                                         </figure>
@@ -114,9 +113,9 @@
                             dataHtml = `
                                 <div class="w-full flex flex-col justify-center items-center">
                                     <figure>
-                                        <img src="{{ asset('image/no-data.png') }}" class="w-30 h-24 text-center" alt="no data" />
+                                        <img src="{{ asset('assets/images/NoData.png') }}" class="w-30 h-24 text-center" alt="no data" />
                                     </figure>
-                                    <h3 class="font-semibold text-center">Banner Tidak Tersedia</h3>
+                                    <h3 class="font-semibold text-center">Data Not Found</h3>
                                 </div>
                             `;
                         }
