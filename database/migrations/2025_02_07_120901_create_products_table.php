@@ -27,14 +27,12 @@ return new class extends Migration
             ->references('id')
             ->onDelete('cascade')
             ->onUpdate('cascade');
-
             $table->string('name');
             $table->string('slug');
             $table->integer('price');
             $table->integer('stock');
             $table->string('image')->nullable();
             $table->longText('description')->nullable();
-            $table->text('short_description')->nullable();
             $table->enum('is_active', [0, 1])->default(1)->comment('0 = inactive, 1 = active');
             $table->timestamps();
             $table->softDeletes();

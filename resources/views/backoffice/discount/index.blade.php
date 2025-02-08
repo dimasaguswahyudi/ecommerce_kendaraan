@@ -110,7 +110,7 @@
               @method('PUT')
             </template>
             <div class="mb-3">
-              <x-input-label for="category_id" value="{{ __('Category') }}" />
+              <x-input-label for="category_id" value="{{ __('Category *') }}" />
               <x-text-input id="category_id" name="category_id" type="hidden" placeholder="{{ __('Select Category') }}"
                 class="mt-1" x-model="category_id" />
               <div class="relative w-full">
@@ -146,16 +146,14 @@
             </div>
             <div class="mb-3">
               <x-input-label for="is_active" value="{{ __('Status') }}" />
-              <div class="form-control">
-                <label class="label cursor-pointer">
-                  <span class="label-text">Active</span>
-                  <input type="radio" x-model="is_active" value='true' class="radio" />
+              <div class="flex items-center space-x-4">
+                <label class="flex items-center">
+                  <input type="radio" x-model="is_active" value="true" class="radio" />
+                  <span class="ml-2">Active</span>
                 </label>
-              </div>
-              <div class="form-control">
-                <label class="label cursor-pointer">
-                  <span class="label-text">Inactive</span>
-                  <input type="radio" x-model="is_active" value='false' class="radio" />
+                <label class="flex items-center">
+                  <input type="radio" x-model="is_active" value="false" class="radio" />
+                  <span class="ml-2">Inactive</span>
                 </label>
               </div>
               <x-input-error x-show="is_active.error" :messages="$errors->get('is_active')" class="mt-2" />

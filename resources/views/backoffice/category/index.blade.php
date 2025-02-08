@@ -23,7 +23,7 @@
                   <th></th>
                   <th>Name</th>
                   <th class="text-center">Image</th>
-                  <th>Status</th>
+                  <th>Status Active</th>
                   <th>Created At</th>
                   <th>Updated At</th>
                   <th class="text-center">Actions</th>
@@ -118,16 +118,14 @@
             </div>
             <div class="mb-3">
               <x-input-label for="is_active" value="{{ __('Status') }}" />
-              <div class="form-control">
-                <label class="label cursor-pointer">
-                  <span class="label-text">Active</span>
-                  <input type="radio" x-model="is_active" value='true' class="radio" />
+              <div class="flex items-center space-x-4">
+                <label class="flex items-center">
+                  <input type="radio" x-model="is_active" value="true" class="radio" />
+                  <span class="ml-2">Active</span>
                 </label>
-              </div>
-              <div class="form-control">
-                <label class="label cursor-pointer">
-                  <span class="label-text">Inactive</span>
-                  <input type="radio" x-model="is_active" value='false' class="radio" />
+                <label class="flex items-center">
+                  <input type="radio" x-model="is_active" value="false" class="radio" />
+                  <span class="ml-2">Inactive</span>
                 </label>
               </div>
               <x-input-error x-show="is_active.error" :messages="$errors->get('is_active')" class="mt-2" />
