@@ -49,10 +49,8 @@
   @include('layouts.frontstore.partials.navbar')
 
   <div class="flex">
-    <div x-show="sidebar">
-      @include('layouts.frontstore.partials.sidebar')
-    </div>
-    <main class="flex-1 px-4 py-6 mb-16 md:mb-5" :class="show ? (sidebar ? 'md:ml-[17%]' : '') : ''">
+    @include('layouts.frontstore.partials.sidebar')
+    <main class="p-3 w-100 wrapper md:ml-[18%] relative z-10">
       @yield('content')
     </main>
   </div>
