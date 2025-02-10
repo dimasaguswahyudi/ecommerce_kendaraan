@@ -48,12 +48,13 @@
 <body>
   @include('layouts.frontstore.partials.navbar')
 
-  <div class="flex">
+  <div class="flex" x-data="Filter()">
     @include('layouts.frontstore.partials.sidebar')
     <main class="p-3 w-100 wrapper md:ml-[18%] relative z-10">
       @yield('content')
     </main>
   </div>
+
 
   <div class="fixed bottom-[5rem] -right-2 md:right-8 z-50">
     <div class="flex flex-col items-center justify-center">
@@ -74,7 +75,6 @@
             currency: "IDR"
         }).format(number);
     }
-   
   </script>
   @stack('scripts')
 </body>

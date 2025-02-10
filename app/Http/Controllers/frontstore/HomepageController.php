@@ -41,12 +41,11 @@ class HomepageController extends Controller
             ->orderBy('categories.name')
             ->select('products.*');
         $discounts = $this->discounts->has('Category');  
-
-        if ($request->category_id) {
+        if (filled($request->category_id)) {
             $products = $products->where('products.category_id', $request->category_id);
             $discounts = $discounts->where('discounts.category_id', $request->category_id);
         }
-        if ($request->discount_id) {
+        if (filled($request->discount_id)) {
             $products = $products->whereHas('Discount', function ($query) use ($request) {
                 $query->where('discounts.id', $request->discount_id);
             });

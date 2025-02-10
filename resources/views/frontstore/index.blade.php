@@ -24,7 +24,7 @@
 @endpush
 
 @section('content')
-<div class="container mx-auto px-3" x-data="Filter()">
+<div class="container mx-auto px-3">
   {{-- banner --}}
   <div class="mb-4">
     @if (count($banners) > 0)
@@ -76,7 +76,7 @@
           <template x-for="(items, index2) in discount" :key="index2">
             <div
               class="card bg-white border hover:bg-secondary-300 hover:font-bold hover:shadow-lg transition duration-300 cursor-pointer">
-              <a href="javascript:void(0);" @click="applyFilter(items.id)"
+              <a href="javascript:void(0);" @click="applyFilter(items.id, '')"
                 :class="{ 'bg-secondary-300 rounded-xl shadow-lg': selectedDiscount === items.id  }">
 
                 <figure class="px-6 pt-6">
@@ -169,17 +169,21 @@
   function Filter() {
       return {
         selectedDiscount: null,
-        products: @json($products), // Produk awal dari backend
+        selectedCategory: null,
+        products: @json($products),
         discounts : @json($discounts),
+        categories : @json($categories),
 
-        applyFilter(discountId) {
+        applyFilter(discountId = null, categoryId = null) {
           this.selectedDiscount = discountId;
+          this.selectedCategory = categoryId;
 
           // Request AJAX ke backend tanpa reload
-          fetch(`/filter?discount_id=${discountId}`)
+          fetch(`/filter?discount_id=${discountId}&category_id=${categoryId}`)
             .then(response => response.json())
             .then(data => {
-              this.products = data.products; // Update daftar produk di frontend
+              this.products = data.products;
+              this.discounts = data.discounts;
             })
             .catch(error => console.error("Error fetching products:", error));
         },
