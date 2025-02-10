@@ -16,12 +16,13 @@ class HomepageController extends Controller
     public function __construct(Banner $banners, Category $categories, Discount $discounts)
     {
         $this->banners = $banners;
-        $this->categories = $categories;
-        $this->discounts = $discounts;
+        $this->categories = $categories->where('is_active', '1');
+        $this->discounts = $discounts->where('is_active', '1');
     }
     public function index()  {
-        $categories = $this->categories->where('is_active', '1')->with('Product')->get();
+        $categories = $this->categories->with('Product')->get();
         $banners = $this->banners->all();
-        return view('frontstore.index', compact('categories', 'banners'));
+        $discounts = $this->discounts->has('Category')->get()->groupBy('Category.name');
+        return view('frontstore.index', compact('categories', 'banners', 'discounts'));
     }
 }

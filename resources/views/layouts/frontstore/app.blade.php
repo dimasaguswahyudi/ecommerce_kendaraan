@@ -30,6 +30,8 @@
   <!-- Alpine JS -->
   <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
+  @stack('styles')
+
 
   <style>
     html {
@@ -37,6 +39,10 @@
  line-height: 1.15;
       -webkit-text-size-adjust: 100%;
       -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    }
+
+    .btn {
+      border: none;
     }
   </style>
 </head>
@@ -62,6 +68,7 @@
         }).format(number);
     }
   </script>
+  @stack('scripts')
 </body>
 
 </html>
