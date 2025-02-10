@@ -38,10 +38,6 @@
       -webkit-text-size-adjust: 100%;
       -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     }
-
-    .btn {
-      border: none
-    }
   </style>
 </head>
 

@@ -9,10 +9,10 @@
       <ul class="menu">
         @forelse ($categories as $category)
         <li class="mb-6">
-          <a href="{{ url('/', $category->slug) }}"
-            class="nav-item text-primary-600 font-semibold text-[16px] block px-4 py-2 transition-all duration-300 ease-in-out 
+          <a href="{{ route('frontstore.category', $category->slug) }}"
+            class=" text-primary-600 font-semibold text-[16px] block px-4 py-2 transition-all duration-300 ease-in-out 
       opacity-80 hover:opacity-100 hover:translate-x-1
-      {{ request()->slug == $category->slug ? 'active bg-primary-600 text-white font-bold text-[18px]' : 'hover:bg-neutral-100 hover:font-bold hover:text-[18px]' }}">
+      {{ request()->slug == $category->slug ? 'active text-[18px] bg-primary-500 text-white rounded-lg' : 'hover:bg-neutral-100 hover:font-bold hover:text-[18px]' }}">
             <span>{{ $category->name }}</span>
           </a>
         </li>
