@@ -20,4 +20,14 @@ class Category extends Model
     {
         return $this->hasMany(Discount::class);
     }
+
+    /**
+     * Get all of the Product for the Category
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function Product(): HasMany
+    {
+        return $this->hasMany(Product::class);
+    }
 }

@@ -7,9 +7,13 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DiscountController;
+use App\Http\Controllers\frontstore\HomepageController;
 
-Route::get('/', function () {
-    return view('welcome');
+
+Route::name('frontstore.')->group(function () {
+   Route::controller(HomepageController::class)->group(function () {
+        Route::get('/', 'index')->name('homepage');
+   });
 });
 
 
