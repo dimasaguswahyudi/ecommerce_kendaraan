@@ -29,6 +29,6 @@ class DatabaseSeeder extends Seeder
             MasterSeeder::class
         ]);
         
-        Product::factory(20)->create();
+        Product::factory(40)->create();
     }
 }

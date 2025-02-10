@@ -27,8 +27,6 @@
   <!-- Scripts -->
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-  <!-- Alpine JS -->
-  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
   @stack('styles')
 
@@ -57,16 +55,26 @@
     </main>
   </div>
 
+  <div class="fixed bottom-[5rem] -right-2 md:right-8 z-50">
+    <div class="flex flex-col items-center justify-center">
+      <figure class="mb-4">
+        <img src="{{ asset('assets/images/box.gif') }}" class="w-20 h-20" alt="checkin sekarang">
+      </figure>
+      <a target="_blank"
+        class="flex items-center justify-center bg-green-500 text-white p-4 rounded-full w-12 h-12 shadow-lg">
+        <i class="fa-brands fa-whatsapp text-3xl"></i>
+      </a>
+    </div>
+  </div>
 
-  <!-- Font Awesome (untuk ikon) -->
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
   <script>
     const formatRupiah = (number) => {
         return new Intl.NumberFormat("id-ID", {
             currency: "IDR"
         }).format(number);
     }
+   
   </script>
   @stack('scripts')
 </body>

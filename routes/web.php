@@ -13,7 +13,8 @@ use App\Http\Controllers\frontstore\HomepageController;
 Route::name('frontstore.')->group(function () {
    Route::controller(HomepageController::class)->group(function () {
         Route::get('/', 'index')->name('homepage');
-        Route::get('category/{slug}', 'index')->name('category');
+        Route::get('/filter-products', 'filterProduct')->name('filterProduct');
+        Route::get('/filter', 'filter')->name('filter');
    });
 });
 
