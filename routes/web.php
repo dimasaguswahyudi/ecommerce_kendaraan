@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DiscountController;
+use App\Http\Controllers\frontstore\CheckoutController;
 use App\Http\Controllers\frontstore\HomepageController;
 
 
@@ -16,6 +17,9 @@ Route::name('frontstore.')->group(function () {
         Route::get('/filter-products', 'filterProduct')->name('filterProduct');
         Route::get('/filter', 'filter')->name('filter');
    });
+   Route::controller(CheckoutController::class)->group(function () {
+        Route::get('/chart', 'index')->name('chart');
+    });
 });
 
 

@@ -133,12 +133,12 @@
                 <div class="flex justify-between items-center mt-auto w-full">
                   <label class="text-red-400 text-xl">
                     Rp. <span
-                      x-text="formatRupiah(items.price - (items.price * (items.Discount?.disc_percent || 0) / 100))"></span>
+                      x-text="formatRupiah(items.price - (items.price * (items.discount?.disc_percent || 0) / 100))"></span>
                   </label>
                   <div class="mb-auto">
                     <div class="flex gap-2">
                       <s class="text-xs text-gray-500" x-text="'Rp. ' + formatRupiah(items.price)"></s>
-                      <small x-text="items.Discount?.disc_percent ? items.Discount.disc_percent + '%' : ''"></small>
+                      <small x-text="items.discount?.disc_percent ? items.discount.disc_percent + '%' : ''"></small>
                     </div>
                   </div>
                 </div>
@@ -146,7 +146,8 @@
                 <div class="flex justify-between items-center mt-auto w-full">
                   <small class="text-gray-500" x-text="'Stock ' + items.stock + ' pcs'"></small>
                   <div class="ml-auto">
-                    <button class="btn bg-primary-500 :hover:bg-primary-600 rounded-full btn-sm tooltip-bottom">
+                    <button class="btn bg-primary-500 :hover:bg-primary-600 rounded-full btn-sm tooltip-bottom"
+                      @click="addToCart(items.id, items.name, items.price, items.discount?.disc_percent || 0); setLabelCarts(); showToast('success', 'Product added to cart')">
                       <img src="{{ asset('assets/images/icons/cart.png') }}" alt="icon-chart" class="h-5">
                     </button>
                   </div>
@@ -190,7 +191,94 @@
         limitText(text, limit) {
           if (!text) return ''; // Jika teks kosong, kembalikan string kosong
           return text.length > limit ? text.substring(0, limit) + '...' : text;
-        }
+        },
+        showToast (type, message) {
+            const toastContainer = document.createElement('div');
+            toastContainer.innerHTML = `
+                <div class="toast toast-top toast-center z-[99999999]"
+                    x-data="{ show: true, timeout: null }"
+                    x-show="show"
+                    x-init="timeout = setTimeout(() => show = false, 2500);
+                            $el.addEventListener('mouseenter', () => clearTimeout(timeout));
+                            $el.addEventListener('mouseleave', () => timeout = setTimeout(() => show = false, 2500));"
+                    x-transition:enter="transition transform ease-out duration-400"
+                    x-transition:enter-start="translate-y-[-100%]"
+                    x-transition:enter-end="translate-y-0"
+                    x-transition:leave="transition transform ease-in duration-300"
+                    x-transition:leave-start="translate-y-0"
+                    x-transition:leave-end="translate-y-[-100%]">
+                    <div class="alert alert-${type} flex justify-between items-center p-4 rounded shadow-lg text-white">
+                        <span>${message}</span>
+                        <button @click="show = false" class="ml-4 text-lg font-bold text-white hover:text-gray-200">
+                            &times;
+                        </button>
+                    </div>
+                </div>`;
+
+            // Ambil elemen hasil innerHTML
+            const toastElement = toastContainer.firstElementChild;
+
+            // Tambahkan toast ke dalam body
+            document.body.appendChild(toastElement);
+
+            // Inisialisasi Alpine.js untuk elemen baru
+            if (typeof Alpine !== 'undefined' && Alpine.initTree) {
+                Alpine.initTree(toastElement);
+            }
+        },
+        getCarts () {
+          return localStorage.getItem('carts') ? JSON.parse(localStorage.getItem('carts')) : [];
+        },
+        addToCart (id, product, price, discount, qty = 1) {          
+            let carts = this.getCarts();
+            const productIndex = carts.findIndex(item => item.product_id == id);
+            if (productIndex !== -1) {
+              carts[productIndex].qty += parseInt(qty);
+            } else {
+                carts.push({
+                    product_id: id,
+                    product: product,
+                    price: parseInt(price),
+                    discount: parseInt(discount),
+                    qty: parseInt(qty)
+                });
+                
+            }
+            localStorage.setItem('carts', JSON.stringify(carts));
+        },
+        setLabelCarts() {
+            const carts = this.getCarts().length;
+            let labelCarts = document.querySelector('.shopping-cart');
+
+            if (!labelCarts) return; // Cegah error jika elemen tidak ditemukan
+
+            if (carts > 0) {
+                labelCarts.textContent = carts > 99 ? '99+' : carts;
+                labelCarts.classList.remove('hidden');
+            } else {
+                labelCarts.classList.add('hidden');
+            }
+        },
+        updateCart (id, separator = '+', qty, productName = null, productPrice = null, productDiscount = null) {
+          let carts = this.getCarts();
+          const productIndex = carts.findIndex(item => item.product_id == id);
+            if (productIndex !== -1) {
+                if (separator === '+') carts[productIndex].qty++;
+                if (separator === '-') carts[productIndex].qty--;
+                if (separator === 'input') carts[productIndex].qty = parseInt(qty);
+                if (separator === 'button') carts[productIndex].qty += parseInt(qty);
+            } else {
+                  carts.push({
+                      product_id: id,
+                      product: productName,
+                      price: parseInt(productPrice),
+                      discount: parseInt(productDiscount),
+                      qty: parseInt(qty)
+                  })
+
+            }
+            localStorage.setItem('carts', JSON.stringify(carts));
+        },
       }
     }
 </script>

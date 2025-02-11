@@ -45,17 +45,19 @@
   </style>
 </head>
 
-<body>
-  @include('layouts.frontstore.partials.navbar')
+<body x-data="Filter()">
 
-  <div class="flex" x-data="Filter()">
+  @include('layouts.frontstore.partials.navbar')
+  <div class="flex">
     @include('layouts.frontstore.partials.sidebar')
     <main class="p-3 w-100 wrapper md:ml-[18%] relative z-10">
       @yield('content')
     </main>
   </div>
 
-
+  @if (session()->has('success') || session()->has('error'))
+  <x-toast />
+  @endif
   <div class="fixed bottom-[5rem] -right-2 md:right-8 z-50">
     <div class="flex flex-col items-center justify-center">
       <figure class="mb-4">

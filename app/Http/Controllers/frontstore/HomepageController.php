@@ -29,7 +29,7 @@ class HomepageController extends Controller
 
         $discounts = $this->discounts->has('Category')->get()->groupBy('Category.name');  
 
-        $products = $this->products->has('Category')->join('categories', 'products.category_id', '=', 'categories.id')
+        $products = $this->products->has('Category')->with('Discount')->join('categories', 'products.category_id', '=', 'categories.id')
             ->orderBy('categories.name')
             ->select('products.*')->get()->groupBy('Category.name');
     
