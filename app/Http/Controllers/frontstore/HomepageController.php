@@ -47,11 +47,10 @@ class HomepageController extends Controller
     }
     public function cartShow(Request $request)
     {
-        $products = Product::whereIn('id', $request->productId)->with('Discount')->get()->transform(function ($product) {
-            $product->image = asset('storage/' . $product->image);
-            return $product;
-        });
-        return response()->json($products);
+        $products = Product::whereIn('id', $request->product_ids)->with('Discount')->get();
+        return response()->json([
+            'products' => $products
+        ]);
     }
     public function filter(Request $request) :JsonResponse {
         $products = $this->products->has('Category')->with('Discount')->join('categories', 'products.category_id', '=', 'categories.id')
