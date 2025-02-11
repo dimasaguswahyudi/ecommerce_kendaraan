@@ -14,12 +14,10 @@ use App\Http\Controllers\frontstore\HomepageController;
 Route::name('frontstore.')->group(function () {
    Route::controller(HomepageController::class)->group(function () {
         Route::get('/', 'index')->name('homepage');
-        Route::get('/filter-products', 'filterProduct')->name('filterProduct');
         Route::get('/filter', 'filter')->name('filter');
+        Route::get('/chart', 'chart')->name('chart');
+        Route::post('/cart/show', 'cartShow')->name('cart.show');
    });
-   Route::controller(CheckoutController::class)->group(function () {
-        Route::get('/chart', 'index')->name('chart');
-    });
 });
 
 

@@ -12,15 +12,17 @@
   </div>
   <div class="flex-none">
     <div class="flex items-center gap-4">
-      <button class="btn bg-[#006547] text-white font-normal px-9" @click="getLocation()"
+      <button class="btn bg-[#006547] text-white font-semibold px-9" @click="getLocation()"
         x-text="your_location"></button>
-      <button class="text-white relative">
-        <div
-          class="shopping-cart absolute -top-2 -right-2 bg-secondary-500 text-primary-500 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center hidden">
-          0
-        </div>
-        <img src="{{ asset('assets/images/icons/cart.png') }}" class="h-7" alt="Keranjang">
-      </button>
+      <a href="{{ route('frontstore.chart') }}">
+        <button class="text-white relative">
+          <div
+            class="shopping-cart absolute -top-2 -right-2 bg-secondary-500 text-primary-500 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center hidden"
+            x-text="total_chart">
+          </div>
+          <img src="{{ asset('assets/images/icons/cart.png') }}" class="h-7" alt="Keranjang">
+        </button>
+      </a>
       <button class="text-white">
         <img src="{{ asset('assets/images/icons/notifikasi.png') }}" class="h-7" alt="Notifikasi">
       </button>

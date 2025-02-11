@@ -35,7 +35,24 @@ class HomepageController extends Controller
     
         return view('frontstore.index', compact('categories', 'banners', 'discounts', 'products'));
     }
+    public function chart()  {
+        $banners = $this->banners->all();
+        $discounts = $this->discounts->has('Category')->get()->groupBy('Category.name');  
 
+        $products = $this->products->has('Category')->with('Discount')->join('categories', 'products.category_id', '=', 'categories.id')
+            ->orderBy('categories.name')
+            ->select('products.*')->get()->groupBy('Category.name');
+
+        return view('frontstore.chart', compact('banners', 'discounts', 'products'));
+    }
+    public function cartShow(Request $request)
+    {
+        $products = Product::whereIn('id', $request->productId)->with('Discount')->get()->transform(function ($product) {
+            $product->image = asset('storage/' . $product->image);
+            return $product;
+        });
+        return response()->json($products);
+    }
     public function filter(Request $request) :JsonResponse {
         $products = $this->products->has('Category')->with('Discount')->join('categories', 'products.category_id', '=', 'categories.id')
             ->orderBy('categories.name')
