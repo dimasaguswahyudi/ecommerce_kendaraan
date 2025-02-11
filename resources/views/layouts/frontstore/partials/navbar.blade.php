@@ -12,7 +12,8 @@
   </div>
   <div class="flex-none">
     <div class="flex items-center gap-4">
-      <button class="btn bg-[#006547] text-white font-normal px-9">SUB - Surabaya</button>
+      <button class="btn bg-[#006547] text-white font-normal px-9" @click="getLocation()"
+        x-text="your_location"></button>
       <button class="text-white relative">
         <div
           class="shopping-cart absolute -top-2 -right-2 bg-secondary-500 text-primary-500 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center hidden">

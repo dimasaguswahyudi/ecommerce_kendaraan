@@ -147,7 +147,7 @@
                   <small class="text-gray-500" x-text="'Stock ' + items.stock + ' pcs'"></small>
                   <div class="ml-auto">
                     <button class="btn bg-primary-500 :hover:bg-primary-600 rounded-full btn-sm tooltip-bottom"
-                      @click="addToCart(items.id, items.name, items.price, items.discount?.disc_percent || 0); setLabelCarts(); showToast('success', 'Product added to cart')">
+                      @click="addToCart(items.id, items.name, items.price, items.discount?.disc_percent || 0); setLabelCarts(); showToast('success', 'Produk Ditambahkan ke-chart')">
                       <img src="{{ asset('assets/images/icons/cart.png') }}" alt="icon-chart" class="h-5">
                     </button>
                   </div>
@@ -171,6 +171,7 @@
       return {
         selectedDiscount: null,
         selectedCategory: null,
+        your_location: 'Aktifkan Lokasi',
         products: @json($products),
         discounts : @json($discounts),
         categories : @json($categories),
@@ -246,6 +247,50 @@
             }
             localStorage.setItem('carts', JSON.stringify(carts));
         },
+        getLocation(){
+          this.your_location = localStorage.getItem('location') ? `${JSON.parse(localStorage.getItem('location')).country_code} - ${JSON.parse(localStorage.getItem('location')).county}` : null
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+
+                    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.address) {                                
+                                this.your_location = `${data.address.country_code} - ${data.address.county}`;
+                                localStorage.setItem('location', JSON.stringify(data.address));
+                            } else {
+                                showToast('error', 'Gagal mendapatkan informasi lokasi')
+                            }
+                        })
+                        .catch(error => {
+                            showToast('error', 'Terjadi kesalahan saat mengakses lokasi ' + error)
+                        });
+                },
+                (error) => {
+                    switch (error.code) {
+                        case error.PERMISSION_DENIED:
+                            showToast('error', 'Pengguna menolak permintaan lokasi')
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            showToast('error', 'Informasi lokasi tidak tersedia')
+                            break;
+                        case error.TIMEOUT:
+                            showToast('error', 'Permintaan lokasi melebihi batas waktu')
+                            break;
+                        default:
+                            showToast('error', 'Terjadi kesalahan saat mengambil lokasi')
+                            break;
+                    }
+                }
+            )
+          }
+          else{
+            showToast('error', 'Geolocation tidak didukung oleh browser Anda')
+          }
+        },
         setLabelCarts() {
             const carts = this.getCarts().length;
             let labelCarts = document.querySelector('.shopping-cart');
@@ -258,26 +303,6 @@
             } else {
                 labelCarts.classList.add('hidden');
             }
-        },
-        updateCart (id, separator = '+', qty, productName = null, productPrice = null, productDiscount = null) {
-          let carts = this.getCarts();
-          const productIndex = carts.findIndex(item => item.product_id == id);
-            if (productIndex !== -1) {
-                if (separator === '+') carts[productIndex].qty++;
-                if (separator === '-') carts[productIndex].qty--;
-                if (separator === 'input') carts[productIndex].qty = parseInt(qty);
-                if (separator === 'button') carts[productIndex].qty += parseInt(qty);
-            } else {
-                  carts.push({
-                      product_id: id,
-                      product: productName,
-                      price: parseInt(productPrice),
-                      discount: parseInt(productDiscount),
-                      qty: parseInt(qty)
-                  })
-
-            }
-            localStorage.setItem('carts', JSON.stringify(carts));
         },
       }
     }
