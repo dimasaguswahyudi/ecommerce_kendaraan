@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers\frontstore;
 
+use App\Models\Order;
 use App\Models\Banner;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Discount;
+use App\Models\OrderDetail;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Models\Customer;
 
 class HomepageController extends Controller
 {
@@ -16,12 +20,18 @@ class HomepageController extends Controller
     protected $discounts;
     protected $banners;
     protected $products;
-    public function __construct(Banner $banners, Category $categories, Discount $discounts, Product $products)
+    protected $orders;
+    protected $orderDetails;
+    protected $customers;
+    public function __construct(Banner $banners, Category $categories, Discount $discounts, Product $products, Order $orders, OrderDetail $orderDetails, Customer $customers)
     {
         $this->banners = $banners;
         $this->categories = $categories->where('categories.is_active', '1');
         $this->discounts = $discounts->where('discounts.is_active', '1');
         $this->products = $products->where('products.is_active', '1');
+        $this->orders = $orders;
+        $this->orderDetails = $orderDetails;
+        $this->customers = $customers;
     }
     public function index(Request $request) {
         $categories = $this->categories->with('Product')->orderBy('name')->get();
@@ -45,7 +55,7 @@ class HomepageController extends Controller
 
         return view('frontstore.chart', compact('banners', 'discounts', 'products'));
     }
-    public function cartShow(Request $request)
+    public function cartShow(Request $request) :JsonResponse
     {
         $products = Product::whereIn('id', $request->product_ids)->with('Discount')->get();
         return response()->json([
@@ -73,6 +83,46 @@ class HomepageController extends Controller
             'products' => $products,
             'discount' => $discounts
         ]);
+    }
+
+    public function order(Request $request)  {
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $formattedDate = now()->format('d-m-Y');
+            $orderCount = Order::whereDate('created_at', now()->toDateString())->count() + 1;
+
+            // Buat nomor transaksi unik: TRX-{tgl}-{bln}-{thn}-{no urut}
+            $no_transaction = "TRX-" . str_replace("-", "", $formattedDate) . "-" . str_pad($orderCount, 4, '0', STR_PAD_LEFT);
+
+            $customer = $this->customers->create([
+                'name' => $request->name,
+                'phone' => $request->phone,
+                'address' => $request->address
+            ]);
+
+            $order = $this->orders->create([
+                'customer_id' => $customer->id,
+                'no_transaction' => $no_transaction,
+                'grand_total' => $request->grand_total
+            ]);
+            
+            foreach ($request->order_detail as $key => $value) {
+                $this->orderDetails->create([
+                    'order_id' => $order->id,
+                    'name_product' => $value['product'],
+                    'product_id' => $value['product_id'],
+                   'price' => $value['qty'] * ($value['price'] - ($value['price'] * ($value['discount'] ?? 0) / 100)),
+                    'qty' => $value['qty']
+                ]);
+            }
+
+            DB::commit();
+            return response()->json(['success' => true, 'message' => 'Order Berhasil Dibuat']);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response()->json(['success' => false, 'message' => $th->getMessage()]);
+        }
     }
     
 }

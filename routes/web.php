@@ -17,6 +17,7 @@ Route::name('frontstore.')->group(function () {
         Route::get('/filter', 'filter')->name('filter');
         Route::get('/chart', 'chart')->name('chart');
         Route::post('/cart/show', 'cartShow')->name('cart.show');
+        Route::post('/order', 'order')->name('order');
    });
 });
 

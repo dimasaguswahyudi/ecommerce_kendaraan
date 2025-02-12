@@ -17,8 +17,7 @@
       <a href="{{ route('frontstore.chart') }}">
         <button class="text-white relative">
           <div
-            class="shopping-cart absolute -top-2 -right-2 bg-secondary-500 text-primary-500 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center hidden"
-            x-text="total_chart">
+            class="shopping-cart absolute -top-2 -right-2 bg-secondary-500 text-primary-500 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center hidden">
           </div>
           <img src="{{ asset('assets/images/icons/cart.png') }}" class="h-7" alt="Keranjang">
         </button>

@@ -45,7 +45,7 @@
   </style>
 </head>
 
-<body x-data="Filter()">
+<body x-data="Filter()" class="font-sans bg-grey-100">
   @include('layouts.frontstore.partials.navbar')
   <div class="flex" x-init="hasCategories = categories.length > 0">
 
