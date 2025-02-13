@@ -119,41 +119,43 @@
 
         <div class="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4">
           <template x-for="(items, index2) in product" :key="index2">
-            <div
-              class="card bg-white border hover:bg-secondary-300 hover:shadow-lg transition duration-300 cursor-pointer">
-              <figure class="px-6 pt-6">
-                <img :src="items.image 
-                ? 'storage/' + items.image 
-                : '{{ asset('assets/images/NoImagePersegi.png') }}'" class="rounded-xl h-40 w-full object-cover"
-                  alt="Category Image">
+            <a :href="'/detail-product/' + items.id">
+              <div
+                class="card bg-white border hover:bg-secondary-300 hover:shadow-lg transition duration-300 cursor-pointer">
+                <figure class="px-6 pt-6">
+                  <img :src="items.image 
+                  ? 'storage/' + items.image 
+                  : '{{ asset('assets/images/NoImagePersegi.png') }}'" class="rounded-xl h-40 w-full object-cover"
+                    alt="Category Image">
 
-              </figure>
-              <div class="card-body py-3 px-6 flex flex-col">
-                <div class="card-title hover:font-bold transition duration-300" x-text="items.name"></div>
-                <div class="flex justify-between items-center mt-auto w-full">
-                  <label class="text-red-400 text-xl">
-                    Rp. <span
-                      x-text="formatRupiah(items.price - (items.price * (items.discount?.disc_percent || 0) / 100))"></span>
-                  </label>
-                  <div class="mb-auto">
-                    <div class="flex gap-2">
-                      <s class="text-xs text-gray-500" x-text="'Rp. ' + formatRupiah(items.price)"></s>
-                      <small x-text="items.discount?.disc_percent ? items.discount.disc_percent + '%' : ''"></small>
+                </figure>
+                <div class="card-body py-3 px-6 flex flex-col">
+                  <div class="card-title hover:font-bold transition duration-300" x-text="items.name"></div>
+                  <div class="flex justify-between items-center mt-auto w-full">
+                    <label class="text-red-400 text-xl">
+                      Rp. <span
+                        x-text="formatRupiah(items.price - (items.price * (items.discount?.disc_percent || 0) / 100))"></span>
+                    </label>
+                    <div class="mb-auto">
+                      <div class="flex gap-2">
+                        <s class="text-xs text-gray-500" x-text="'Rp. ' + formatRupiah(items.price)"></s>
+                        <small x-text="items.discount?.disc_percent ? items.discount.disc_percent + '%' : ''"></small>
+                      </div>
+                    </div>
+                  </div>
+                  <p x-text="limitText(items.description, 50)"></p>
+                  <div class="flex justify-between items-center mt-auto w-full">
+                    <small class="text-gray-500" x-text="'Stock ' + items.stock + ' pcs'"></small>
+                    <div class="ml-auto">
+                      <button class="btn bg-primary-500 :hover:bg-primary-600 rounded-full btn-sm tooltip-bottom"
+                        @click="addToCart(items.id, items.name, items.price, items.discount?.disc_percent || 0); setLabelCarts(); showToast('success', 'Produk Ditambahkan ke-chart')">
+                        <img src="{{ asset('assets/images/icons/cart.png') }}" alt="icon-chart" class="h-5">
+                      </button>
                     </div>
                   </div>
                 </div>
-                <p x-text="limitText(items.description, 50)"></p>
-                <div class="flex justify-between items-center mt-auto w-full">
-                  <small class="text-gray-500" x-text="'Stock ' + items.stock + ' pcs'"></small>
-                  <div class="ml-auto">
-                    <button class="btn bg-primary-500 :hover:bg-primary-600 rounded-full btn-sm tooltip-bottom"
-                      @click="addToCart(items.id, items.name, items.price, items.discount?.disc_percent || 0); setLabelCarts(); showToast('success', 'Produk Ditambahkan ke-chart')">
-                      <img src="{{ asset('assets/images/icons/cart.png') }}" alt="icon-chart" class="h-5">
-                    </button>
-                  </div>
-                </div>
               </div>
-            </div>
+            </a>
           </template>
         </div>
       </div>

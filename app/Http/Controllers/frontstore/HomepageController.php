@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\OrderRequest;
 use App\Models\Customer;
 
 class HomepageController extends Controller
@@ -45,6 +46,12 @@ class HomepageController extends Controller
     
         return view('frontstore.index', compact('categories', 'banners', 'discounts', 'products'));
     }
+
+    public function detailProduct($id) {
+        $product = $this->products->findOrFail($id);
+        return view('frontstore.detail', compact('product'));
+    }
+
     public function chart()  {
         $banners = $this->banners->all();
         $discounts = $this->discounts->has('Category')->get()->groupBy('Category.name');  
@@ -85,12 +92,11 @@ class HomepageController extends Controller
         ]);
     }
 
-    public function order(Request $request)  {
-        // dd($request->all());
+    public function order(OrderRequest $request)  {
         DB::beginTransaction();
         try {
             $formattedDate = now()->format('d-m-Y');
-            $orderCount = Order::whereDate('created_at', now()->toDateString())->count() + 1;
+            $orderCount = $this->orders->whereDate('created_at', now()->toDateString())->count() + 1;
 
             // Buat nomor transaksi unik: TRX-{tgl}-{bln}-{thn}-{no urut}
             $no_transaction = "TRX-" . str_replace("-", "", $formattedDate) . "-" . str_pad($orderCount, 4, '0', STR_PAD_LEFT);
