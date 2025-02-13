@@ -7,7 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DiscountController;
-use App\Http\Controllers\frontstore\CheckoutController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\frontstore\HomepageController;
 
 
@@ -24,9 +24,7 @@ Route::name('frontstore.')->group(function () {
 
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->middleware(['auth', 'verified'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 });
 
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
