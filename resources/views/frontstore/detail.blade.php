@@ -20,7 +20,7 @@
       <p class="mt-2 text-gray-600" x-text="'Stock: ' + product.stock + ' pcs'"></p>
       <div class="card-actions mt-4">
         <button class="btn btn-primary w-full"
-          @click="addToCart(product.id, product.name, product.price, product.discount?.disc_percent || 0)">
+          @click="addToCart(product.id, product.name, product.price, product.discount?.disc_percent || 0); setLabelCarts(); showToast('success', 'Produk Ditambahkan ke-chart')">
           Tambah Ke Keranjang
         </button>
       </div>
@@ -35,11 +35,22 @@
       formatRupiah(value) {
         return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(value).replace('Rp', '');
       },
-      addToCart(id, name, price, discount) {
-        let cart = JSON.parse(localStorage.getItem('carts')) || [];
-        cart.push({ id, name, price, discount, qty: 1 });
-        localStorage.setItem('carts', JSON.stringify(cart));
-        showToast('success','Produk ditambahkan ke keranjang!');
+      addToCart(id, product, price, discount, qty = 1) {
+        let carts = getCarts();
+          const productIndex = carts.findIndex(item => item.product_id == id);
+          if (productIndex !== -1) {
+            carts[productIndex].qty += parseInt(qty);
+          } else {
+              carts.push({
+                  product_id: id,
+                  product: product,
+                  price: parseInt(price),
+                  discount: parseInt(discount),
+                  qty: parseInt(qty)
+              });
+              
+          }
+          localStorage.setItem('carts', JSON.stringify(carts));
       }
     };
   }

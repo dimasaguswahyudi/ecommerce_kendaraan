@@ -26,9 +26,7 @@
         if (!text) return ''; // Jika teks kosong, kembalikan string kosong
         return text.length > limit ? text.substring(0, limit) + '...' : text;
       },
-      addToCart (id, product, price, discount, qty = 1) {    
-            console.log(id, product, price, discount, qty);
-              
+      addToCart (id, product, price, discount, qty = 1) {                  
           let carts = getCarts();
           const productIndex = carts.findIndex(item => item.product_id == id);
           if (productIndex !== -1) {
