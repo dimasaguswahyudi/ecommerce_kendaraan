@@ -97,59 +97,63 @@
 
   {{-- product --}}
   <template x-for="(product, index) in products" :key="index">
-    <div class="card mb-4" :class="product.length % 2 == 0 ? 'background-green' : 'background-yellow'">
+    <div class="card mb-4 p-4 rounded-lg" :class="product.length % 2 == 0 ? 'background-green' : 'background-yellow'">
+
       <div class="card-body">
-        <div class="label-section flex items-center max-w-fit min-w-fit mb-8">
-          <div class="triangle mt-3 mb-0 mx-3 bg-primary-500 relative pl-9 pr-5 h-8 -skew-x-[30deg]">
+        <!-- Label Section -->
+        <div class="label-section flex items-center max-w-fit min-w-fit mb-6">
+          <div class="triangle mt-3 mb-0 mx-3 bg-primary-500 relative pl-7 pr-4 h-8 -skew-x-[30deg]">
             <div class="label-content flex items-center skew-x-[30deg]">
-              <div class="label-icon p-2 rounded-full max-w-fit bg-white absolute -left-14 -top-[0.65em] 
-                          border-2 border-gray-400 ring-primary">
+              <div class="label-icon p-2 rounded-full bg-white absolute -left-12 -top-3 
+                                    border-2 border-gray-400 ring-primary">
                 <figure>
                   <img :src="product[0].category.image 
-                    ? 'storage/' + product[0].category.image 
-                    : '{{ asset('assets/images/NoImagePersegi.png') }}'" class="w-8 h-8" alt="Category Image">
-
+                                    ? 'storage/' + product[0].category.image 
+                                    : '{{ asset('assets/images/NoImagePersegi.png') }}'" class="w-8 h-8 object-cover"
+                    alt="Category Image">
                 </figure>
               </div>
-              <div class="label-title text-secondary-500 font-bold tracking-wider ml-2 mt-1" x-text="index">
+              <div class="label-title text-secondary-500 font-bold text-sm tracking-wide ml-2" x-text="index">
               </div>
             </div>
           </div>
         </div>
 
-        <div class="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4">
+        <!-- Grid Produk -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           <template x-for="(items, index2) in product" :key="index2">
-
             <div
-              class="card bg-white border hover:bg-secondary-300 hover:shadow-lg transition duration-300 cursor-pointer">
-              <figure class="px-6 pt-6">
+              class="card bg-white border hover:bg-secondary-300 hover:shadow-lg transition duration-300 cursor-pointer rounded-lg overflow-hidden">
+              <figure class="px-4 pt-4">
                 <img :src="items.image 
-                  ? 'storage/' + items.image 
-                  : '{{ asset('assets/images/NoImagePersegi.png') }}'" class="rounded-xl h-40 w-full object-cover"
-                  alt="Category Image">
-
+                                ? 'storage/' + items.image 
+                                : '{{ asset('assets/images/NoImagePersegi.png') }}'"
+                  class="rounded-lg h-40 w-full object-cover" alt="Product Image">
               </figure>
-              <div class="card-body py-3 px-6 flex flex-col">
+              <div class="card-body p-4 flex flex-col">
                 <a :href="'/detail-product/' + items.slug">
-                  <div class="card-title hover:font-bold transition duration-300" x-text="items.name"></div>
+                  <div class="card-title text-base md:text-lg font-semibold hover:font-bold transition duration-300"
+                    x-text="items.name">
+                  </div>
                 </a>
-                <div class="flex justify-between items-center mt-auto w-full">
-                  <label class="text-red-400 text-xl">
+                <div class="flex justify-between items-center mt-2">
+                  <label class="text-red-500 font-bold text-lg">
                     Rp. <span
                       x-text="formatRupiah(items.price - (items.price * (items.discount?.disc_percent || 0) / 100))"></span>
                   </label>
                   <div class="mb-auto">
-                    <div class="flex gap-2">
-                      <s class="text-xs text-gray-500" x-text="'Rp. ' + formatRupiah(items.price)"></s>
+                    <div class="flex gap-2 text-sm">
+                      <s class="text-gray-500" x-text="'Rp. ' + formatRupiah(items.price)"></s>
                       <small x-text="items.discount?.disc_percent ? items.discount.disc_percent + '%' : ''"></small>
                     </div>
                   </div>
                 </div>
-                <p x-text="limitText(items.description, 50)"></p>
-                <div class="flex justify-between items-center mt-auto w-full">
-                  <small class="text-gray-500" x-text="'Stock ' + items.stock + ' pcs'"></small>
+                <p class="text-gray-600 text-sm mt-2" x-text="limitText(items.description, 50)"></p>
+                <div class="flex justify-between items-center mt-auto">
+                  <small class="text-gray-500 text-xs" x-text="'Stock ' + items.stock + ' pcs'"></small>
                   <div class="ml-auto">
-                    <button class="btn bg-primary-500 :hover:bg-primary-600 rounded-full btn-sm tooltip-bottom"
+                    <button
+                      class="btn bg-primary-500 hover:bg-primary-600 rounded-full btn-sm tooltip-bottom p-2 flex items-center justify-center"
                       @click="addToCart(items.id, items.name, items.price, items.discount?.disc_percent || 0); setLabelCarts(); showToast('success', 'Produk Ditambahkan ke-chart')">
                       <img src="{{ asset('assets/images/icons/cart.png') }}" alt="icon-chart" class="h-5">
                     </button>
@@ -157,11 +161,11 @@
                 </div>
               </div>
             </div>
-
           </template>
         </div>
       </div>
     </div>
   </template>
+
 </div>
 @endsection
