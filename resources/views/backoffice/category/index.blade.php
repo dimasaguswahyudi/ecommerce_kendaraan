@@ -22,10 +22,13 @@
                 <tr>
                   <th></th>
                   <th>Name</th>
+                  <th>Total Product</th>
                   <th class="text-center">Image</th>
                   <th>Status Active</th>
                   <th>Created At</th>
+                  <th>Created By</th>
                   <th>Updated At</th>
+                  <th>Updated By</th>
                   <th class="text-center">Actions</th>
                 </tr>
               </thead>
@@ -36,6 +39,7 @@
                     {{ $loop->iteration + ($categories->currentPage() - 1) * $categories->perPage() }}
                   </td>
                   <td>{{ $category->name }}</td>
+                  <td>{{ $category->Product != null ? $category->Product->count() : '0' }} Pcs</td>
                   <td class="text-center">
                     @if (!empty($category->image))
                     <div class="avatar">
@@ -47,9 +51,15 @@
                     -
                     @endif
                   </td>
-                  <td>{{ $category->is_active ? 'Active' : 'Inactive' }}</td>
+                  <td>
+                    <div class="badge badge-outline {{ $category->is_active == 1 ? 'badge-primary' : 'badge-error' }}">
+                      {{ $category->is_active ? 'Active' : 'Inactive' }}
+                    </div>
+                  </td>
                   <td>{{ $category->created_at->format('d/m/Y H:i') }}</td>
+                  <td>{{ $category->CreatedBy->name }}</td>
                   <td>{{ $category->updated_at->format('d/m/Y H:i') }}</td>
+                  <td>{{ $category->UpdatedBy != null ? $category->UpdatedBy->name : '-' }}</td>
                   <td>
                     <div class="flex gap-2 justify-center">
                       <x-primary-button-icon x-data="" x-on:click.prevent="
@@ -75,7 +85,7 @@
                 </tr>
                 @empty
                 <tr>
-                  <td colspan="4" class="text-center text-slate-500">No Data Found.</td>
+                  <td colspan="10" class="text-center text-slate-500">No Data Found.</td>
                 </tr>
                 @endforelse
               </tbody>

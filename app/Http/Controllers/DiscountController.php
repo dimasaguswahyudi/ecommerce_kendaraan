@@ -95,6 +95,11 @@ class DiscountController extends Controller
      */
     public function destroy(Discount $discount)
     {
+
+        if ($discount->Product) {
+            return to_route('admin.discount.index')->with('error', 'Discount has products that are still active!');
+        }
+
         $discount->delete();
         return to_route('admin.discount.index')->with('success', 'Data successfully deleted!');
     }

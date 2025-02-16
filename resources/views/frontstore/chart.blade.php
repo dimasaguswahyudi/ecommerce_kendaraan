@@ -112,7 +112,6 @@
     return {
         cart: getCarts(),
         displayProduct: [],
-        'location_address' : localStorage.getItem('location') ? `${JSON.parse(localStorage.getItem('location')).country_code}`,
         grand_total: 0, // Tambahkan grand_total
         name: {
             value: '{{ old('name') ?? '' }}',

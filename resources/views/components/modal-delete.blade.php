@@ -16,13 +16,13 @@
       </h2>
 
       <div class="mt-6 flex justify-end">
-        <x-secondary-button x-on:click="$dispatch('close')">
-          {{ __('Cancel') }}
-        </x-secondary-button>
-
-        <x-danger-button type="submit" class="ms-3">
+        <x-danger-button type="submit">
           {{ __('Delete') }}
         </x-danger-button>
+
+        <x-secondary-button x-on:click="$dispatch('close')" class="ms-2">
+          {{ __('Cancel') }}
+        </x-secondary-button>
       </div>
     </form>
 </x-modal>

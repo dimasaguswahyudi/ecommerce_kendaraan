@@ -43,7 +43,7 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
         $validated = $request->all();
         $validated['is_active'] = $request->is_active == 'true' ? '1' : '0';
@@ -75,7 +75,6 @@ class ProductController extends Controller
      */
     public function update(ProductRequest $request, Product $product)
     {
-        
         $image = null;
         if ($request->hasFile('image')) {
             $image = $request->file('image')->store('product', 'public');

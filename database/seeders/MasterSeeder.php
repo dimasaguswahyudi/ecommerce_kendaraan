@@ -44,6 +44,7 @@ class MasterSeeder extends Seeder
             $createdCategory = Category::create([
                 'name' => $category,
                 'slug' => Str::slug($category),
+                'created_by' => 1
             ]);
 
             // Simpan ID kategori berdasarkan nama
@@ -65,7 +66,8 @@ class MasterSeeder extends Seeder
                 Discount::create([
                     'name' => $disc['name'],
                     'category_id' => $kuduEntekId, // Menggunakan ID dari kategori "Kudu Entek"
-                    'disc_percent' => $disc['disc_percent']
+                    'disc_percent' => $disc['disc_percent'],
+                    'created_by' => 1
                 ]);
             }
         }

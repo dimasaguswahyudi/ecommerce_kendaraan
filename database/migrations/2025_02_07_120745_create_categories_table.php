@@ -19,6 +19,27 @@ return new class extends Migration
             $table->enum('is_active', [0, 1])->default(1)->comment('0 = inactive, 1 = active');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->bigInteger('created_by')->unsigned();
+            $table->foreign('created_by')
+            ->on('users')
+            ->references('id')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
+
+            $table->bigInteger('updated_by')->unsigned()->nullable();
+            $table->foreign('updated_by')
+            ->on('users')
+            ->references('id')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
+
+            $table->bigInteger('deleted_by')->unsigned()->nullable();
+            $table->foreign('deleted_by')
+            ->on('users')
+            ->references('id')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
         });
     }
 

@@ -24,12 +24,14 @@
                   <th>Name</th>
                   <th class="text-center">Image</th>
                   <th>Discount</th>
-                  <th>Price</th>
-                  <th>Stock</th>
+                  <th class="w-auto">Price</th>
+                  <th class="w-16">Stock</th>
                   <th>Description</th>
                   <th>Status Active</th>
                   <th>Created At</th>
+                  <th>Created By</th>
                   <th>Updated At</th>
+                  <th>Updated By</th>
                   <th class="text-center">Actions</th>
                 </tr>
               </thead>
@@ -57,8 +59,8 @@
                     @if ($product->Discount != null)
                     <div class="lh-sm">
                       <s class="text-red-500 text-[10px]">
-                        {{ formatRupiah($product->price) }}</s>
-                      <label class="font-bold">{{ formatRupiah($product->price - ($product->price *
+                        Rp {{ formatRupiah($product->price) }}</s>
+                      <label class="font-bold">Rp {{ formatRupiah($product->price - ($product->price *
                         $product->Discount->disc_percent) /
                         100)
                         }}
@@ -70,11 +72,17 @@
                     </label>
                     @endif
                   </td>
-                  <td>{{ $product->stock }}</td>
+                  <td>{{ $product->stock }} Pcs</td>
                   <td>{{ $product->description }}</td>
-                  <td>{{ $product->is_active ? 'Active' : 'Inactive' }}</td>
+                  <td>
+                    <div class="badge badge-outline {{ $product->is_active == 1 ? 'badge-primary' : 'badge-error' }}">
+                      {{ $product->is_active ? 'Active' : 'Inactive' }}
+                    </div>
+                  </td>
                   <td>{{ $product->created_at->format('d/m/Y H:i') }}</td>
+                  <td>{{ $product->CreatedBy->name }}</td>
                   <td>{{ $product->updated_at->format('d/m/Y H:i') }}</td>
+                  <td>{{ $product->UpdatedBy != null ? $product->UpdatedBy->name : '-' }}</td>
                   <td>
                     <div class="flex gap-2 justify-center">
                       <x-primary-button-icon x-data="" x-on:click.prevent="
@@ -105,7 +113,7 @@
                 </tr>
                 @empty
                 <tr>
-                  <td colspan="4" class="text-center text-slate-500">No Data Found.</td>
+                  <td colspan="14" class="text-center text-slate-500">No Data Found.</td>
                 </tr>
                 @endforelse
               </tbody>
@@ -214,14 +222,21 @@
                 </div>
                 <div class="mb-3">
                   <x-input-label for="price" value="{{ __('Price *') }}" />
-                  <x-text-input id="price" name="price" type="text" class="mt-1 w-full"
-                    placeholder="{{ __('Enter Price') }}" x-model="price.value" />
+                  <label class="input input-bordered flex items-center gap-2">
+                    <span class="text-[14px]">Rp</span>
+                    <input id="formattedPrice" name="formattedPrice" type="text" class="grow border-0 mt-1"
+                      placeholder="{{ __('Enter Price') }}" x-model="formattedPrice" x-on:input="formatPrice()" />
+                  </label>
+                  <input type="hidden" name="price" id="price" x-model="price.value" />
                   <x-input-error x-show="price.error" :messages="$errors->get('price')" class="mt-2" />
                 </div>
                 <div class="mb-3">
                   <x-input-label for="stock" value="{{ __('Stock *') }}" />
-                  <x-text-input id="stock" name="stock" type="text" class="mt-1 w-full"
-                    placeholder="{{ __('Enter Stock') }}" x-model="stock.value" />
+                  <label class="input input-bordered flex items-center gap-2">
+                    <input id="stock" name="stock" type="number" min="1" class="grow border-0 mt-2"
+                      placeholder="{{ __('Enter Stock') }}" x-model="stock.value" />
+                    <span class="text-[14px]">Pcs</span>
+                  </label>
                   <x-input-error x-show="stock.error" :messages="$errors->get('stock')" class="mt-2" />
                 </div>
                 <div class="mb-3">
@@ -289,6 +304,7 @@
                 value: '{{ old('price') ?? '' }}',
                 error: {{ $errors->get('price') ? 'true' : 'false' }},
             },
+            formattedPrice: '',
             stock: {
                 value: '{{ old('stock') ?? '' }}',
                 error: {{ $errors->get('stock') ? 'true' : 'false' }},
@@ -313,18 +329,33 @@
                 this.slug.value = slug;
                 this.description.value = description;
                 this.price.value = price;
+
+                this.formattedPrice = this.formatRupiah(price);
+
                 this.stock.value = stock;
                 this.is_active = is_active;
                 this.isEdit = true;
             },
-
+            formatPrice() {
+                let rawValue = this.formattedPrice.replace(/\D/g, '');
+                this.price.value = rawValue;                
+                if (rawValue === '') {
+                    this.formattedPrice = '';
+                    return;
+                }
+                this.formattedPrice = new Intl.NumberFormat('id-ID').format(rawValue);
+            },
+            formatRupiah(value) {
+                if (!value) return '';
+                return new Intl.NumberFormat('id-ID', { style: 'decimal' }).format(value);
+            },
             resetForm() {
                 this.formAction = '{{ route('admin.product.store') }}';
-                this.category_id = '';
+                this.category_id.value = '';
                 this.filteredCategories = [];
                 this.category = '';
 
-                this.discount_id = '';
+                this.discount_id.value = '';
                 this.filteredDiscounts = [];
                 this.discount = '';
 
@@ -337,9 +368,10 @@
                 this.description.error = false;
 
                 this.price.value = '';
+                this.formattedPrice = '';
                 this.price.error = false;
 
-                this.stock.value = '';
+                this.stock.value = 1;
                 this.stock.error = false;
 
                 this.image.error = false;

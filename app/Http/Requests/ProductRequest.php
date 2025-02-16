@@ -16,6 +16,14 @@ class ProductRequest extends FormRequest
         return true;
     }
 
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'price' => (int) str_replace('.', '', $this->price),
+            'stock' => (int) $this->stock,
+        ]);
+    }
+    
     /**
      * Get the validation rules that apply to the request.
      *
@@ -29,10 +37,17 @@ class ProductRequest extends FormRequest
             'name' => ['required', 'string', 'max:50', 'min:3'],
             'slug' => ['required', 'string', 'max:50', 'min:3', Rule::unique(Product::class)->ignore(request()->route('product')->id ?? '')],
             'description' => ['required', 'string', 'max:255'],
-            'price' => ['required'],
-            'stock' => ['required'],
-            'image' => [Rule::requiredIf($this->method() === 'POST'), 'image', 'mimes:jpg,jpeg,png,svg,webp,gif', 'max:500'],
+            'price' => ['required', 'integer', 'min:1000'],
+            'stock' => ['required', 'integer', 'min:1'],
+            'image' => [Rule::requiredIf($this->method() === 'POST'), 'image', 'mimes:jpg,jpeg,png,svg,webp,gif', 'max:2048'],
             'is_active' => ['required', 'string'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'image.max' => 'Image Max Size 2MB',
         ];
     }
 }

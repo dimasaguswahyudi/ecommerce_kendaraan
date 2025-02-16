@@ -47,8 +47,8 @@ class HomepageController extends Controller
         return view('frontstore.index', compact('categories', 'banners', 'discounts', 'products'));
     }
 
-    public function detailProduct($id) {
-        $product = $this->products->findOrFail($id);
+    public function detailProduct($slug) {
+        $product = $this->products->where('slug', $slug)->first();
         return view('frontstore.detail', compact('product'));
     }
 

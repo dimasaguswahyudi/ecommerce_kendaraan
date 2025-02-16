@@ -91,6 +91,9 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+        if ($category->Product) {
+            return to_route('admin.category.index')->with('error', 'Category has products that are still active!');
+        }
         $category->delete();
         return to_route('admin.category.index')->with('success', 'Data successfully deleted!');
     }

@@ -23,11 +23,14 @@
                   <th></th>
                   <th>Category</th>
                   <th>Name</th>
+                  <th>Total Product</th>
                   <th class="text-center">Image</th>
                   <th>Disc Percent</th>
                   <th>Status Active</th>
                   <th>Created At</th>
+                  <th>Created By</th>
                   <th>Updated At</th>
+                  <th>Updated By</th>
                   <th class="text-center">Actions</th>
                 </tr>
               </thead>
@@ -39,6 +42,7 @@
                   </td>
                   <td>{{ $discount->Category->name }}</td>
                   <td>{{ $discount->name }}</td>
+                  <td>{{ $discount->Product != null ? $discount->Product->count() : '0' }} Pcs</td>
                   <td class="text-center">
                     @if (!empty($discount->image))
                     <div class="avatar">
@@ -51,9 +55,15 @@
                     @endif
                   </td>
                   <td>{{ $discount->disc_percent }}%</td>
-                  <td>{{ $discount->is_active ? 'Active' : 'Inactive' }}</td>
+                  <td>
+                    <div class="badge badge-outline {{ $discount->is_active == 1 ? 'badge-primary' : 'badge-error' }}">
+                      {{ $discount->is_active ? 'Active' : 'Inactive' }}
+                    </div>
+                  </td>
                   <td>{{ $discount->created_at->format('d/m/Y H:i') }}</td>
+                  <td>{{ $discount->CreatedBy->name }}</td>
                   <td>{{ $discount->updated_at->format('d/m/Y H:i') }}</td>
+                  <td>{{ $discount->UpdatedBy != null ? $discount->UpdatedBy->name : '-' }}</td>
                   <td>
                     <div class="flex gap-2 justify-center">
                       <x-primary-button-icon x-data="" x-on:click.prevent="
@@ -80,7 +90,7 @@
                 </tr>
                 @empty
                 <tr>
-                  <td colspan="4" class="text-center text-slate-500">No Data Found.</td>
+                  <td colspan="12" class="text-center text-slate-500">No Data Found.</td>
                 </tr>
                 @endforelse
               </tbody>
@@ -139,8 +149,13 @@
             </div>
             <div class="mb-3">
               <x-input-label for="disc_percent" value="{{ __('Percent Discount *') }}" />
-              <x-text-input id="disc_percent" name="disc_percent" type="number" class="mt-1 w-full"
-                placeholder="{{ __('Enter Percent') }}" x-model="disc_percent.value" min="0" max="100" />
+
+              <label class="input input-bordered flex items-center gap-2">
+                <input id="disc_percent" name="disc_percent" type="number" class="grow border-0"
+                  placeholder="{{ __('Enter Percent') }}" x-model="disc_percent.value" min="1" max="100" />
+                <span class="material-icons-outlined text-[14px]">percent</span>
+              </label>
+
 
               <x-input-error x-show="disc_percent.error" :messages="$errors->get('disc_percent')" class="mt-2" />
             </div>
@@ -223,7 +238,7 @@
                 this.formAction = '{{ route('admin.discount.store') }}';
                 this.discount.value = '';
                 this.discount.error = false;
-                this.disc_percent.value = 0;
+                this.disc_percent.value = 1;
                 this.disc_percent.error = false;
                 this.image.error = false;
                 this.is_active = 'true';

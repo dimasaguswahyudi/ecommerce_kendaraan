@@ -36,9 +36,9 @@
         return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(value).replace('Rp', '');
       },
       addToCart(id, name, price, discount) {
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let cart = JSON.parse(localStorage.getItem('carts')) || [];
         cart.push({ id, name, price, discount, qty: 1 });
-        localStorage.setItem('cart', JSON.stringify(cart));
+        localStorage.setItem('carts', JSON.stringify(cart));
         showToast('success','Produk ditambahkan ke keranjang!');
       }
     };

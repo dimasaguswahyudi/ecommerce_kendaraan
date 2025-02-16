@@ -14,7 +14,7 @@ use App\Http\Controllers\frontstore\HomepageController;
 Route::name('frontstore.')->group(function () {
    Route::controller(HomepageController::class)->group(function () {
         Route::get('/', 'index')->name('homepage');
-        Route::get('/detail-product/{id}', 'detailProduct')->name('detail-product');
+        Route::get('/detail-product/{slug}', 'detailProduct')->name('detail-product');
         Route::get('/filter', 'filter')->name('filter');
         Route::get('/chart', 'chart')->name('chart');
         Route::post('/cart/show', 'cartShow')->name('cart.show');
